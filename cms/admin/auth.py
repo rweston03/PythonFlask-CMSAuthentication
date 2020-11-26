@@ -11,7 +11,7 @@ def protected(route_function):
             return redirect(url_for('admin.login'))
         return route_function(**kwargs)
 
-    return wrapped_route_function()
+    return wrapped_route_function
 
 
 @admin_bp.before_app_request
@@ -26,12 +26,12 @@ def login():
         username = request.form['username']
         password = request.form['password']
         error = None
-        user = User.query.filter_by(username).first()
+        user = User.query.filter_by(username=username).first()
         if user is None:
             error = "Incorrect username."
         elif not user.check_password(password):
             error = "Incorrect password."
-        else:
+        if error is None:
             session.clear()
             session['user_id'] = user.id
             return redirect(url_for('admin.content', type='page'))

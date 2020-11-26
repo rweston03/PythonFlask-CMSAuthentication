@@ -32,5 +32,5 @@ class User(db.Model):
     lastname = db.Column(db.String(100), nullable=False)
 
     def check_password(self, value):
-        return check_password_hash(self, value)
+        return check_password_hash(self.password, value)
 
